@@ -28,7 +28,7 @@ library(grid)
 
 # unit and buffer
 unit_sh <- readOGR("gis/shawnee_nf") 
-unit_buffer <- gBuffer(unit_sh, width = 1e+05)
+unit_buffer <- gBuffer(unit_sh, width = 2e+05)
 
 unit_sh <- spTransform(unit_sh, CRS("+proj=longlat +datum=NAD83 +no_defs +ellps=GRS80 +towgs84=0,0,0"))
 unit_buffer <- spTransform(unit_buffer, CRS("+proj=longlat +datum=NAD83 +no_defs +ellps=GRS80 +towgs84=0,0,0"))
@@ -41,14 +41,15 @@ site_ctds_df <-read_csv("raw_data/nadp_site_ctds.csv") %>%
 
 # Annual Precipitation-Weighted Mean Concentrations:
 nadp_conc <- read_csv("raw_data/NTN-All-cy.csv") %>% 
-  dplyr::select(siteID, yr, pH)
+  dplyr::select(siteID, yr, Criteria1:Criteria3, pH)
 
 # Annual Depositions ()
 nadp_dep <- read_csv("raw_data/NTN-All-cydep.csv") %>% 
-  dplyr::select(siteID, yr, SO4, totalN)
+  dplyr::select(siteID, yr,  Criteria1:Criteria3,  SO4, totalN)
 
 # NADP dat
-nadp_dat <- left_join(nadp_conc, nadp_dep, by = c("siteID", "yr")) %>% 
+nadp_dat <- left_join(nadp_conc, nadp_dep, by = c("siteID", "yr", "Criteria1", "Criteria2", "Criteria3")) %>% 
+  filter(Criteria1 >= 75 & Criteria2 >= 90 & Criteria3 >= 75) %>% 
   filter(yr < 2017)
 
 # create NA values
