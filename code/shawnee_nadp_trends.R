@@ -204,16 +204,16 @@ n_dat <- buffer_stat_df %>%
 
 
 n_plot <- ggplot(data = n_dat) +
-  geom_ribbon(aes(x = yr, ymin=mean_value-sd_value, ymax=mean_value+sd_value,  fill = "100km buffer")) +
-  geom_line(aes(yr, mean_value, color = "100km buffer", fill = "100km buffer"),  size = 1.2) +
+  geom_ribbon(aes(x = yr, ymin=mean_value-sd_value, ymax=mean_value+sd_value,  fill = "200km buffer")) +
+  geom_line(aes(yr, mean_value, color = "200km buffer", fill = "200km buffer"),  size = 1.2) +
   theme_minimal() +
   geom_line(aes(yr, totalN, color = "Dixon Springs NADP", fill = "Dixon Springs NADP"), size = 1.2, data = unit_mons) +
   scale_color_manual(name = NULL,
-                     values = c("Dixon Springs NADP" = "darkgreen", "100km buffer" = "grey85"),
-                     breaks = c("Dixon Springs NADP", "100km buffer")) +
+                     values = c("Dixon Springs NADP" = "darkgreen", "200km buffer" = "grey85"),
+                     breaks = c("Dixon Springs NADP", "200km buffer")) +
   scale_fill_manual(name = NULL,
-                    values = c("100km buffer" = "grey75", "Dixon Springs NADP" = "white"),
-                    breaks = c("Dixon Springs NADP", "100km buffer")) +
+                    values = c("200km buffer" = "grey75", "Dixon Springs NADP" = "white"),
+                    breaks = c("Dixon Springs NADP", "200km buffer")) +
   labs(x = "Year", 
        y = expression(paste(NO[3]^" -", " & ", NH[4]^" +", " (kg/ha)")), 
        title = "Nitrogen Deposition") +
