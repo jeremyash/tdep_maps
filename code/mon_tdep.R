@@ -27,7 +27,7 @@ library(ggpubr)
 # 
 # library(Hmisc)
 # library(tidyverse)
-# library(raster)
+# library(raster) 
 # library(rasterVis)
 # library(rgdal)
 # library(grid)
@@ -109,6 +109,10 @@ mon_sf <- sf::st_as_sf(mon)
 mon_buffer <- spTransform(mon_buffer, crs_new)
 mon_buffer_sf <- sf::st_as_sf(mon_buffer)
 
+# gauley integrated spruce restoration
+gisr <- readOGR("gis/GISR_ProjectBoundary_062419")
+gisr <- spTransform(gisr, crs_new)
+
 #############################################################################
 ## overlay mon and extract tdep
 #############################################################################
@@ -166,6 +170,29 @@ mon_s_16 <- crop_raster(mon_buffer, s_16)
 colnames(mon_s_16)[1] <- "s_16"
 mon_s <- left_join(mon_s_01, mon_s_16) 
 
+
+
+
+
+# crop rasters to GISR shapefile centroid
+
+gCentroid(gisr)
+gisr_n <- crop(n_16, y = extent(c(1310000, 1390000, 1760000, 1840000)))
+plot(gisr_n)
+plot(gisr, add = TRUE)
+
+
+writeRaster(gisr_n,
+            filename = "gis/gisr_n_dep_15_17.tif")
+
+
+gisr_s <- crop(s_16, y = extent(c(1310000, 1390000, 1760000, 1840000)))
+plot(gisr_s)
+plot(gisr, add = TRUE)
+
+
+writeRaster(gisr_s,
+            filename = "gis/gisr_s_dep_15_17.tif")
 
 ##-------------
 ## nitrogen plotting
